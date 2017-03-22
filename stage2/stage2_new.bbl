@@ -1,0 +1,16 @@
+\begin{thebibliography}{1}
+
+\bibitem{word2vec}
+T.~Mikolov, I.~Sutskever, K.~Chen, G.~Corrado, and J.~Dean.
+\newblock Distributed representations of words and phrases and their
+  compositionality.
+\newblock In {\em Proceedings of the 26th International Conference on Neural
+  Information Processing Systems}, NIPS'13, pages 3111--3119, USA, 2013. Curran
+  Associates Inc.
+
+\bibitem{simrank}
+Jeh, ~Glen, and Jennifer ~Widom
+\newblock SimRank: a measure of structural-context similarity.
+\newblock In {\em In Proceedings of the eighth ACM SIGKDD international conference on Knowledge discovery and data mining}, pp. 538-543. ACM, 2002.
+
+\end{thebibliography}
