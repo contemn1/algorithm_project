@@ -62,6 +62,20 @@ c(a_i, b_j)=\lVert \vec{v}_1 - \vec{v}_2 \rVert \\
  where \quad  \vec{v}_1 = word2vec(a_i), \vec{v}_2=word2vec(b_j)
 \end{array}
 $$
+\\
+After completing similarity measurement, we need to choose a clustering algorithm to cluster the tweets. Since we did not know the  exact number of categories, so clustering algorithms based on partitions such as K-means are not suitable. Hierarchical Clustering would be a better choice. We choose agglomerative clustering algorithm. \\
+
+Agglomerative clustering algorithm treats each tweet as a singleton cluster at first and repeatedly merge 
+pair of clusters with minimum distance until the pairwise distances between all remaining clusters are lower than certain number. The function which is used to measure the distance between two different cluster $C_i$ and $C_j$ is usually called linkage function. There several types of linkage function: single linkage, complete linkage and average linkage. Assume distance(m, n) is the semantic distance between tweet m in cluster $C\i$ and tweet n in cluster $C_i$. Single linkage is the minimum of the distance(m, n) for all $m \in C_i, n \in C_j $, Complete linkage is the maximum of the distance(m, n) for all $m \in C_i, n \in C_j $, Average linkage is the average of the distance(m, n) for all $m \in C_i, n \in C_j $. The formula of above three linkage functions are shown as follows:
+\begin{equation*}
+  \begin{aligned}
+ single(C_i, C_j) =\min_{\forall m \in C_i, n \in C_j} {distance(i, j)} \\
+ complete(C_i, C_j) =\min_{\forall m \in C_i, n \in C_j} {distance(i, j)} \\
+average(C_i, C_j) =\frac {\sum\limits_{\forall m \in C_i, n \in C_j} {distance(i, j)}}{|C_i| |C_j|  }
+ \end{aligned}
+ \end{equation*}
+
+
 
 \item[$\diamond$]{2a) Recommending similar tweets and hashtags based on structural similarity}\\
 
@@ -106,11 +120,11 @@ In Algorithm 3, we store node\_scores in a hash table, so its space complexity  
 \end{itemize}
 
 \begin{figure}[H]
-  \includegraphics[width=\linewidth]{C:/Users/Michael/Downloads/user_flowchart.png}
+  \includegraphics[width=\linewidth]{user_flowchart.png}
 \end{figure}
 
 \begin{figure}[H]
-  \includegraphics[width=\linewidth]{C:/Users/Michael/Downloads/cluster_flowchart.png}
+  \includegraphics[width=\linewidth]{cluster_flowchart.png}
 \end{figure}
 
 \pagebreak
