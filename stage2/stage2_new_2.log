@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.17 (TeX Live 2016) (preloaded format=pdflatex 2016.5.22)  24 MAR 2017 23:04
+This is pdfTeX, Version 3.14159265-2.6-1.40.17 (TeX Live 2016) (preloaded format=pdflatex 2016.5.22)  24 MAR 2017 23:11
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -791,14 +791,14 @@ Underfull \hbox (badness 10000) in paragraph at lines 147--148
 
  []
 
-[6] <user_flowchart.png, id=31, 770.88pt x 968.61874pt>
+[6] <user_flowchart.png, id=30, 770.88pt x 968.61874pt>
 File: user_flowchart.png Graphic file (type png)
 
 <use user_flowchart.png>
 Package pdftex.def Info: user_flowchart.png used on input line 152.
 (pdftex.def)             Requested size: 345.0pt x 433.49484pt.
 
-<cluster_flowchart.png, id=33, 623.32875pt x 707.64375pt>
+<cluster_flowchart.png, id=32, 623.32875pt x 707.64375pt>
 File: cluster_flowchart.png Graphic file (type png)
 
 <use cluster_flowchart.png>
@@ -844,11 +844,11 @@ LaTeX Warning: There were multiply-defined labels.
 ### simple group (level 1) entered at line 1061 ({)
 ### bottom level 
 Here is how much of TeX's memory you used:
- 4507 strings out of 493014
- 63420 string characters out of 6133351
- 147518 words of memory out of 5000000
- 7949 multiletter control sequences out of 15000+600000
- 7562 words of font info for 29 fonts, out of 8000000 for 9000
+ 4503 strings out of 493014
+ 63378 string characters out of 6133351
+ 147502 words of memory out of 5000000
+ 7946 multiletter control sequences out of 15000+600000
+ 7257 words of font info for 28 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  38i,21n,35p,1121b,3579s stack positions out of 5000i,500n,10000p,200000b,80000s
 </usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts
@@ -860,15 +860,14 @@ mmi10.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cm
 mi5.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi
 7.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.
 pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb
-></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmss10.pfb>
-</usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb><
-/usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></u
-sr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb></us
-r/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmti7.pfb>
-Output written on stage2_new_2.pdf (14 pages, 248517 bytes).
+></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb>
+</usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></
+usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb></u
+sr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmti7.pfb>
+Output written on stage2_new_2.pdf (14 pages, 240482 bytes).
 PDF statistics:
- 111 PDF objects out of 1000 (max. 8388607)
- 76 compressed objects within 1 object stream
+ 107 PDF objects out of 1000 (max. 8388607)
+ 73 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
  11 words of extra memory for PDF output out of 10000 (max. 10000000)
 
