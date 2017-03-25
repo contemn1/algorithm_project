@@ -24,8 +24,12 @@ Stage2 - The Design Stage.
 There are three types of users who will use this system. We will begin with the first user type: 1) users who select a topic and bring up a cluster of tweets related to that topic.
 
 \item[$\diamond$]{1) Tweet clustering based on semantic similarity}
-
-We aim to cluster tweets into different groups using Hierarchical Clustering. To do this, we require semantic similarity scores. We compute these using the extended {\bf Edit Distance} algorithm integrated {\bf Word2Vec} embedding to compute the distance between sentences in the tweets, and by grouping by shortest distance we divide tweets into different groups. \\\\
+\begin{itemize}
+\item[$\diamond$]{1.1) Semantic Similarity Measurement}\\
+We aim to cluster tweets into different groups using Hierarchical Clustering. To do this, we require semantic similarity scores. The first step is to transform words and sentences to vectors. The traditional method to represent word and document vectors is Bag of Words. The bag-of-words feature vector is the sum of all one-hot vectors of the words, and therefore has a zero value for every word that  did not occur. In the weighted variation, it is a weighted sum according to term frequency or TF-IDF scores.But the problem is that the document vector constructed by this method is high dimensional and sparse(because there are thousands of words in the corpus but a tweet can at most contain 140 words, so most of the values in the document vector is 0). In order to solve this problem, we use  {\bf Word2Vec}[1] to get a dense, low-dimensional embedding vector of each words. Then, we will use two divergent algorithms to measure the similarity of documents, the first one is based on extended  Edit Distance and the second one is based on TF-IDF weighting.\\
+\begin{itemize}
+\item[$\diamond$]{1.1a) Extended Edit Distance}\\
+We compute these using the extended {\bf Edit Distance} algorithm integrated with word embeddings to compute the distance between sentences in the tweets, and by grouping by shortest distance we divide tweets into different groups. \\\\
 In details, we describe tweet sentence $S_1$ as $S_1$=\{$a_1$,$a_2$,…,$a_n$\} and sentence $S_2$ as $S_2$ =\{$b_1$,$b_2$, …,$b_m$\}. $S_1$ consists of n words and $S_2$ consists of m words. $a_i$ is the i th word of $S_1$ and $b_j$ is the j th word of $S_2$. We use Sim($S_1$,$S_2$) to describe the similarity between $S_1$ and $S_2$, with the range of 0 (no relation) to 1 (semantic equivalence). For edit distance, we utilize Levenshtein Distance algorithm to extend to the word sets in sentences. We define the Levenshtein distance between $S_1$ and $S_2$ is L(n,m), where  \(0\leq i\leq n\) and \(0\leq j\leq n\). And we have: \[L(i, j) = max(i, j)  \qquad   if \quad min(i,j)=0, \]  
 
 $$
@@ -52,7 +56,7 @@ $$
 
 We also need to consider the circumstances that if two different words have the same or similar meaning (e.g., “cat” and “kitty”), in which case edit distance defines them as a mismatch. We address this issue by introducing Word2vec to measure semantic similarity between words. 
 %{\sf Word2vec}~\cite{word2vec} 
-Word2vec [1] is an unsupervised  deep learning algorithm that maps each word to a vector  $\in \mathcal{R}^n$ such that the semantically similar words are mapped to the vectors that are close to each other in the geometry space. 
+Word2vec is an unsupervised  deep learning algorithm that maps each word to a vector  $\in \mathcal{R}^n$ such that the semantically similar words are mapped to the vectors that are close to each other in the geometry space. 
 In our settings, given any two words, e.g.,  $a_i$ and $b_j$ in the above, we first apply word2vec to map them to two vectors, $\vec{v}_1$ and $\vec{v}_2$, and then use the euclidean distance, $\lVert \vec{v}_1 - \vec{v}_2 \rVert$, to measure the cost of the replacement.
 We may normalize the cost into a relatively small range. 
 
@@ -63,6 +67,24 @@ c(a_i, b_j)=\lVert \vec{v}_1 - \vec{v}_2 \rVert \\
 \end{array}
 $$
 \\
+\item[$\diamond$]{1.1b) TF-IDF Weighting}\\
+After getting vectors of words, we can use weighted sum of word vectors to represent document vectors, then use cosine distance of document vectors to measure the similarity between them. We first introduce the concept of TF-IDF.\\
+
+TF is a short-cut for term frequency, which means how frequently a term occurs in a certain document. IDF is a short cut for Inverse Document Frequency, which measures how important the term is. Let TF(i, j) be the term frequency of $word_i in documents_j$, count(i, j) be the times that $word_i$ appears in $document_j$, $C$ be the total number of words in all documents. N be the total number of documents, df(i, j) be the number of documents containing $word_i$. The formula of TF-IDF are shown as followes.
+  \begin{align*}
+  	& TF-IDF(i, j) = TF(i, j) * IDF(i, j)\\
+	& TF(i, j) = \frac{count(i, j)}{C}\\
+	& IDF(i, j) = \log \frac{N}{df(i, j)}
+  \end{align*}
+
+We can represent each document as a matrix with  $C$ rows, each row i of the matrix is the embedding vector of the $word_i$ if  $word_i$ is in the document or a vector consisting of zero if $word_i$ is not in the document. Then, we use TF-IDF method to calculate a weighting vector, the vector contains  $C$ rows, each row of the vector is the  TF-IDF value of corresponding words.  The paragraph vector of a document is the dot product of document matrix and weighting vector. Then, we can use cosine similarity of two vectors measure the distances. For any two vectors  $a, b$ 
+
+\begin{equation*}
+cos(a, b) = \frac{a \cdot b}{|a| \cdot |b|}
+\end{equation*}
+\end{itemize}
+
+\item[$\diamond$]{1.2) Clustering Algorithm}\\
 After completing similarity measurement, we need to choose a clustering algorithm to cluster the tweets. Since we did not know the  exact number of categories, so clustering algorithms based on partitions such as K-means are not suitable. Hierarchical Clustering would be a better choice. We choose agglomerative clustering algorithm. \\
 
 Agglomerative clustering algorithm treats each tweet as a singleton cluster at first and repeatedly merge 
@@ -75,6 +97,7 @@ average(C_i, C_j) =\frac {\sum\limits_{\forall m \in C_i, n \in C_j} {distance(i
  \end{aligned}
  \end{equation*}
 
+\end{itemize}
 
 
 \item[$\diamond$]{2a) Recommending similar tweets and hashtags based on structural similarity}\\
