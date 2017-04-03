@@ -1,0 +1,29 @@
+1. Gather tweets using twitter_streaming.py (change X and Y and pipe to next gen file)
+(gather hashtags then run new iteration with most popular new hashtags)
+
+twitter_streaming_2.py: starts up a listener of incoming tweets from profiles you follow
+the iterative version that uses the most freq words from the prev gen to filter tweets in the next gen
+input: consumer key, access token. data_X_gen_(Y-1)_plain
+output: 1. data_X_gen_Y.txt, data_X_hashtag_gen_Y.txt (a dict of freqs)
+
+Using > twitter_data.txt, you can save tweets from listener to json txt file
+python twitter_streaming_2.py > data_X_gen_(Y+1).txt
+python twitter_streaming_2.py > data_6_gen_2.txt
+
+---------------------------------
+2. Convert JSON to plain (change X and Y)
+python tweet_json_to_plain.py
+input: text file of json mess (user, timestamp, tweet content, etc.): data_X_gen_(Y+1)
+output: txt or csv file of a tweets' contents: data_X_gen_(Y+1)_plain
+
+---------------------------------
+3. Parse txt to obtain a bipartite graph
+4. Run SimRank on bipartite graph
+
+twitter_bipgraph.py:
+input: csv file of plain text tweets
+output: tweet IDs, hashtag IDs, bipartite graph (represented using IDs), SimRank scores for all node pairs
+
+simrank_tweets.py:
+contains the functions to run G_sq and SimRank
+
