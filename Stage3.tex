@@ -313,101 +313,99 @@ Since there were thousands of tweets that were gathered, we created a dendrogram
 \end{itemize}
 
 \begin{python}
-	
-	class HierarchicalClusterer(object):
-	def __init__(
-	self,
-	distance_matrix,
-	linkage_function,
-	minium_clusters=2):
-	self.distance_matrix = distance_matrix
-	self.linkage_function = linkage_function
-	self.minium_clusters = minium_clusters
-	
-	def build_clusters(self):
-	print 'a'
-	
-	def do_link_clustering(self, cluster_id_list, cluster_nodes):
-	
-	def small_big(first, second):
-	if first < second else (second, first)
-	
-	def merge(cluster1,
-	cluster2,
-	distance,
-	cluster_ids,
-	cluster_nodes):
-	cluster1, cluster2 = small_big(cluster1, cluster2)
-	cluster_ids[cluster1].extend(cluster_ids[cluster2])
-	cluster_ids[cluster2] = []
-	node = Node()
-	
-	if cluster_nodes[cluster1]:
-	node.left = cluster_nodes[cluster1]
-	cluster_nodes[cluster1].parent = node
-	else:
-	node.left_instance = cluster1
-	
-	if cluster_nodes[cluster2]:
-	node.right = cluster_nodes[cluster2]
-	cluster_nodes[cluster2].parent = node
-	else:
-	node.right_instance = cluster2
-	
-	node.set_height(distance, distance)
-	cluster_nodes[cluster1] = node
-	
-	length = self.distance_matrix.shape[0]
-	cluster_number = self.distance_matrix.shape[0]
-	distance_list = [
-	ClusterPair(first,
-	second,
-	self.distance_matrix[first][second], 1, 1)
-	for first in range(length) for second in range(first + 1, length)]
-	
-	distance_queue = MyHeap(
-	initial=distance_list,
-	key=lambda x: x.distance)
-	
-	while cluster_number - self.minium_clusters > 0:
-	pair = distance_queue.pop()
-	if not pair:
-	break
-	
-	if not valid_pair(pair, cluster_id_list):
-	continue
-	
-	merge(pair.cluster1, pair.cluster2,
-	pair.distance, cluster_id_list, cluster_nodes)
-	
-	for index in range(length):
-	if index != pair.cluster1 \
-	and cluster_id_list[index]:
-	cluster1, cluster2 = \
-	small_big(cluster1, cluster2)
-	
-	new_distance = self.linkage_function(
-	self.distance_matrix,
-	cluster_id_list[smaller],
-	cluster_id_list[bigger])
-	
-	distance_queue.push(ClusterPair(
-	smaller,
-	bigger,
-	new_distance,
-	len(cluster_id_list[smaller]),
-	len(cluster_id_list[bigger])))
-	
-	cluster_number -= 1
-	
+class HierarchicalClusterer(object):
+    def __init__(
+            self,
+            distance_matrix,
+            linkage_function,
+            minium_clusters=2):
+        self.distance_matrix = distance_matrix
+        self.linkage_function = linkage_function
+        self.minium_clusters = minium_clusters
+
+    def build_clusters(self):
+        print 'a'
+
+    def do_link_clustering(self, cluster_id_list, cluster_nodes):
+
+        def small_big(first, second):
+             if first < second else (second, first)
+
+        def merge(cluster1,
+                  cluster2,
+                  distance,
+                  cluster_ids,
+                  cluster_nodes):
+            cluster1, cluster2 = small_big(cluster1, cluster2)
+            cluster_ids[cluster1].extend(cluster_ids[cluster2])
+            cluster_ids[cluster2] = []
+            node = Node()
+
+            if cluster_nodes[cluster1]:
+                node.left = cluster_nodes[cluster1]
+                cluster_nodes[cluster1].parent = node
+            else:
+                node.left_instance = cluster1
+
+            if cluster_nodes[cluster2]:
+                node.right = cluster_nodes[cluster2]
+                cluster_nodes[cluster2].parent = node
+            else:
+                node.right_instance = cluster2
+
+            node.set_height(distance, distance)
+            cluster_nodes[cluster1] = node
+
+        length = self.distance_matrix.shape[0]
+        cluster_number = self.distance_matrix.shape[0]
+        distance_list = [
+            ClusterPair(first,
+            second,
+            self.distance_matrix[first][second], 1, 1)
+            for first in range(length) for second in range(first + 1, 
+            length)]
+
+        distance_queue = MyHeap(
+            initial=distance_list,
+            key=lambda x: x.distance)
+
+        while cluster_number - self.minium_clusters > 0:
+            pair = distance_queue.pop()
+            if not pair:
+                break
+
+            if not valid_pair(pair, cluster_id_list):
+                continue
+
+            merge(pair.cluster1, pair.cluster2,
+             pair.distance, cluster_id_list, cluster_nodes)
+
+            for index in range(length):
+                if index != pair.cluster1 \
+                        and cluster_id_list[index]:
+            cluster1, cluster2 = \
+                small_big(cluster1, cluster2)
+
+                    new_distance = self.linkage_function(
+                        self.distance_matrix,
+                        cluster_id_list[smaller],
+                        cluster_id_list[bigger])
+
+                    distance_queue.push(ClusterPair(
+                        smaller,
+                        bigger,
+                        new_distance,
+                        len(cluster_id_list[smaller]),
+                        len(cluster_id_list[bigger])))
+
+            cluster_number -= 1
+
 \end{python}
 
 \begin{itemize}
 	\item SimRank output (to be integrated into main pipeline later)
 \end{itemize}
 This outputs structural similarity scores between tweets. As described in the ‘pruning’ section of the original SimRank paper (cited in Phase 2), we did not compute distances between tweet that were too far away from one another; thus, score of 0 are not presented in the histogram. Over a hundred thousand tweets were read.
-
-Later, we may use Edit Distance to compute similarity scores and compare the clustering performance on using Edit Distance vs. using Document Vector. 
 
 \begin{itemize}
 	\item simrank\_tweets.py: contains functions for running SimRank on bipartite graph
