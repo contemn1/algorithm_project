@@ -3,7 +3,7 @@
 import re, math
 from gensim.models.keyedvectors import KeyedVectors
 
-model = KeyedVectors.load_word2vec_format('/Users/lingfeizeng/MSDS/CS512/project/google.bin', binary=True)
+model = KeyedVectors.load_word2vec_format('/Users/lingfeizeng/MSDS/CS512/project/google.b', binary=True)
 
 WORD = re.compile(r'\w+')
 
@@ -113,7 +113,7 @@ import collections
 
 # input data, generate distance matrix
 
-tweets = pd.read_csv('.\tweets.csv')
+tweets = pd.read_csv('./tweets.csv')
 n = len(tweets)
 tweets_content = tweets["Tweet content"][:n]
 print tweets_content
