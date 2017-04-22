@@ -7,7 +7,7 @@ import pickle
 
 #given an input tweet, find similar tweets and hashtags
 
-def get_tweets(graph_dict, input_hashtag_tweets, tweet_ids, input_hashtag, similar_hashtags, cat):
+def get_tweets(graph_dict, input_hashtag_tweets, tweet_ids, input_hashtag, similar_hashtags, cat, header):
   similar_tweets = []
   for (hashtag, score) in similar_hashtags:
     tweets = graph_dict[hashtag] #for hashtags of that tweet
@@ -17,7 +17,7 @@ def get_tweets(graph_dict, input_hashtag_tweets, tweet_ids, input_hashtag, simil
   similar_hashtags = list(set(similar_hashtags))
 
   cwd = os.getcwd()
-  fn = cwd + '\\data_7_gen_2_hashtag_'+str(input_hashtag)+'_simtweets_'+cat+'.txt'
+  fn = header + '_hashtag_'+ str(input_hashtag) +'_simtweets_'+cat+'.txt'
   output = open(fn,'w') 
   if similar_tweets == []:
     output.write('No new tweets found')
@@ -27,9 +27,9 @@ def get_tweets(graph_dict, input_hashtag_tweets, tweet_ids, input_hashtag, simil
   output.close()
 
 
-def get_hashtags(graph_dict, input_hashtag, hashtag_ids, similar_hashtags, cat):
+def get_hashtags(graph_dict, input_hashtag, hashtag_ids, similar_hashtags, cat, header):
   cwd = os.getcwd()
-  fn = cwd + '\\data_7_gen_2_hashtag_'+str(input_hashtag)+'_simhashtags_'+cat+'.txt'
+  fn = header + '_hashtag_'+ str(input_hashtag) +'_simhashtags_'+cat+'.txt'
   output = open(fn,'w') 
   if similar_hashtags == []:
     output.write('No new hashtags found')
@@ -42,7 +42,10 @@ def get_hashtags(graph_dict, input_hashtag, hashtag_ids, similar_hashtags, cat):
 def main():
   #load G, scores and id labels
   cwd = os.getcwd()
-  data_file = 'data_1'
+  X = 8
+  Y = 1
+  data_file = 'data_' + str(X) + '_gen_'+ str(Y)
+  header = cwd + '\\' + data_file
   header = cwd + '\\' + data_file
   graph_dict = pickle.load( open(header +'_bigraph.p', "rb" ) )
   tweet_ids = pickle.load( open(header +'_tweets.p', "rb" ) ) 
@@ -74,18 +77,18 @@ def main():
   sorted_rel_scores.reverse()
 
   #sort hashtags into categories of scores. The % are arbitrary, for now.
-  #get histogram of scores. High: top 10%. Mid: 10-20%. Low: 20-30%
-  high = sorted_rel_scores[0 : int(len(sorted_rel_scores) * .1)]
-  mid = sorted_rel_scores[int(len(sorted_rel_scores) * .1) : int(len(sorted_rel_scores) * .2)]
-  low = sorted_rel_scores[int(len(sorted_rel_scores) * .2) : int(len(sorted_rel_scores) * .3)]
+  #High: top 20%. Mid: 20-30%. Low: 30-40%
+  high = sorted_rel_scores[0 : int(len(sorted_rel_scores) * .2)]
+  mid = sorted_rel_scores[int(len(sorted_rel_scores) * .2) : int(len(sorted_rel_scores) * .3)]
+  low = sorted_rel_scores[int(len(sorted_rel_scores) * .3) : int(len(sorted_rel_scores) * .4)]
   
-  get_tweets(graph_dict, input_hashtag_tweets, tweet_ids, input_hashtag, high, 'high')
-  get_tweets(graph_dict, input_hashtag_tweets, tweet_ids, input_hashtag, mid, 'mid')
-  get_tweets(graph_dict, input_hashtag_tweets, tweet_ids, input_hashtag, low, 'low')
+  get_tweets(graph_dict, input_hashtag_tweets, tweet_ids, input_hashtag, high, 'high', header)
+  get_tweets(graph_dict, input_hashtag_tweets, tweet_ids, input_hashtag, mid, 'mid', header)
+  get_tweets(graph_dict, input_hashtag_tweets, tweet_ids, input_hashtag, low, 'low', header)
 
-  get_hashtags(graph_dict, input_hashtag, hashtag_ids, high, 'high')
-  get_hashtags(graph_dict, input_hashtag, hashtag_ids, mid, 'mid')
-  get_hashtags(graph_dict, input_hashtag, hashtag_ids, low, 'low')
+  get_hashtags(graph_dict, input_hashtag, hashtag_ids, high, 'high', header)
+  get_hashtags(graph_dict, input_hashtag, hashtag_ids, mid, 'mid', header)
+  get_hashtags(graph_dict, input_hashtag, hashtag_ids, low, 'low', header)
 
 if __name__ == '__main__':
     try:
