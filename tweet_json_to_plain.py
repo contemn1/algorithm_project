@@ -4,10 +4,13 @@ import pandas as pd
 import pdb
 import matplotlib.pyplot as plt
 import numpy as np
+import os
 
+cwd = os.getcwd()
 X = 7 #dataset ID
 Y = 1 #iteration step
-tweets_data_path = 'C:\Users\Michael\Documents\_rsch\classes sp17/algo\project code/trial 2/data_'+str(X)+'_gen_'+str(Y+1)+'.txt'
+#tweets_data_path = cwd + '\\data_'+str(X)+'_gen_'+str(Y+1)+'.txt'
+tweets_data_path = cwd + '\\twitter_data_1.txt'
 
 tweets_data = []
 tweets_file = open(tweets_data_path, "r")
@@ -23,7 +26,8 @@ tweets = pd.DataFrame()
 tweets['text'] = map(lambda tweet: tweet['text'], tweets_data) #create 'text' column in dataframe
 
 import io
-f = open('C:/Users/Michael/Documents/_rsch/classes sp17/algo/project code/trial 2/data_'+str(X)+'_gen_'+str(Y+1)+'_plain.txt', 'w')
+#f = open(cwd + '\\data_'+str(X)+'_gen_'+str(Y+1)+'_plain.txt', 'w')
+f = open(cwd + '\\twitter_data_1_plain.txt', 'w')
 for line in tweets['text']:
     lamp = line.encode('UTF-8') #convert to unicode
     lamp_2 = lamp.decode('unicode_escape').encode('ascii','ignore')	#get rid of unicode artifacts in hashtags
