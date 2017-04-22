@@ -1,35 +1,49 @@
 #Pandas code: http://adilmoujahid.com/posts/2014/07/twitter-analytics/
 import json
 import pandas as pd
-import pdb
+import pdb, sys, traceback
 import matplotlib.pyplot as plt
 import numpy as np
 import os
 
-cwd = os.getcwd()
-X = 7 #dataset ID
-Y = 1 #iteration step
-#tweets_data_path = cwd + '\\data_'+str(X)+'_gen_'+str(Y+1)+'.txt'
-tweets_data_path = cwd + '\\twitter_data_1.txt'
+def main():
+  cwd = os.getcwd()
+  X = 8 #dataset ID
+  Y = 1 #current gen
+  tweets_data_path = cwd + '\\data_'+str(X)+'_gen_'+str(Y)+'_json.txt'
 
-tweets_data = []
-tweets_file = open(tweets_data_path, "r")
-for line in tweets_file:
+  k=1
+  tweets_data = [] #Can't store too many tweets b/c of memory error
+  tweets_file = open(tweets_data_path, "r")
+  for line in tweets_file:
+      #if k > 20000:
+      #    break
+      try:
+          tweet = json.loads(line) #dictionary object
+          if u'text' in tweet: #some tweets don't have the key 'text'
+              tweets_data.append(tweet)
+      except:
+          continue
+      k+=1
+
+  tweets = pd.DataFrame() 
+  tweets['text'] = map(lambda tweet: tweet['text'], tweets_data) #create 'text' column in dataframe
+  tweets['lang'] = map(lambda tweet: tweet['lang'], tweets_data)
+  tweets = tweets[tweets['lang'].str.contains("en")==True] #only keep tweets in english
+
+  import io
+  f = open(cwd + '\\data_'+str(X)+'_gen_'+str(Y)+'.txt', 'w')
+  for line in tweets['text']:
+      line = line.replace('\\','') #avoid UnicodeDecodeError: 'unicodeescape' codec can't decode byte
+      pre_tweet = line.encode('UTF-8') #convert to unicode
+      tweet = pre_tweet.decode('unicode_escape').encode('ascii','ignore') #get rid of unicode artifacts in hashtags
+      f.write(tweet.replace('\n',' ') + '\n' + '\n') #'\n' within a tweet may break a single tweet into multiple lines
+      #so first remove \n bc we want to keep each tweet on one line
+
+if __name__ == '__main__':
     try:
-        tweet = json.loads(line) #dictionary object
-        if u'text' in tweet: #some tweets don't have the key 'text'
-            tweets_data.append(tweet)
+        main()
     except:
-        continue
-
-tweets = pd.DataFrame()
-tweets['text'] = map(lambda tweet: tweet['text'], tweets_data) #create 'text' column in dataframe
-
-import io
-#f = open(cwd + '\\data_'+str(X)+'_gen_'+str(Y+1)+'_plain.txt', 'w')
-f = open(cwd + '\\twitter_data_1_plain.txt', 'w')
-for line in tweets['text']:
-    pre_tweet = line.encode('UTF-8') #convert to unicode
-    tweet = pre_tweet.decode('unicode_escape').encode('ascii','ignore')	#get rid of unicode artifacts in hashtags
-    f.write(tweet.replace('\n',' ') + '\n' + '\n') #'\n' within a tweet may break a single tweet into multiple lines
-    #so first remove \n bc we want to keep each tweet on one line
+        type, value, tb = sys.exc_info()
+        traceback.print_exc()
+        pdb.post_mortem(tb)

@@ -5,8 +5,8 @@ from tweepy import OAuthHandler
 from tweepy import Stream
 from tweepy.streaming import StreamListener
 import operator
-from itertools import islice
 import os
+import pickle
 
 #Variables that contains the user credentials to access Twitter API 
 consumer_key = 'S8XtmVeNeYp0F5s3Ba8294rOD'
@@ -28,66 +28,51 @@ class StdOutListener(StreamListener):
 #use hashtags from the last iteration to search for related hashtags in the Listener
 def get_hashtags():
   cwd = os.getcwd()
-  X=7 #dataset ID
-  Y=2 #iteration step
-  hashtag_freqs = {}
-  f = open(cwd + '\\data_'+str(X)+'_gen_'+str(Y)+'_plain.txt', 'r')
+  X=8 #dataset ID
+  Y=0 #prev gen you get your hashtags from
+  hashtag_freqs = {} #store by hashtag : freq
+  f = open(cwd + '\\data_'+str(X)+'_gen_'+str(Y)+'.txt', 'r')
   for tweet in f:
     if '#' in tweet:  #only consider tweets with hashtags
       splitted_tweet = tweet.split()
       for word in splitted_tweet:
-        if word[0] == '#':
+        if word[0] == '#' and len(word) > 1: #do not consider words that are just the symbol '#'
           if word in hashtag_freqs:
             hashtag_freqs[word] += 1  #track frequency to take only the top 10 most popular hashtags
           else:
             hashtag_freqs[word] = 1
 
-  hashtag_freqs.pop('#', None)  #remove '#'
+  #hashtag_freqs.pop('#', None)  #remove '#'
   sorted_freqs = sorted(hashtag_freqs.items(), key=operator.itemgetter(1))  #sort 
   sorted_freqs.reverse()
-  hashtags = []
-  for (k,v) in sorted_freqs:
-    hashtags.append(k)
-  most_pop = sorted_freqs[0:int(round(len(sorted_freqs)/4))]
-  #most_pop_ret = hashtags[0:int(round(len(hashtags)/4))]
+  most_pop = [pair[0] for pair in sorted_freqs][0:int(round(len(sorted_freqs)/4))] #top 25%
 
-  prev_hashtags = []
-  if Y > 0: #check if file exists
-    with open(cwd + '\\data_'+str(X)+'_curr_hashtag_gen_'+str(Y)+'.txt', 'r') as f:
-      #prev_hashtags = list(islice(f, Y*10)) #The +'\n' is built in from reading the file
-      end = Y*10  #the number of lines to check in the file. The number of hashtags in prev gen Y is Y*10
-      j=0
-      for line in f:
-        if j < end:
-          prev_hashtags.append(line.replace('\n',''))
-        else:
-          break
-        j += 1
+  #get prev hashtags from pickle
+  #prev_hashtags = pickle.load(open(cwd + '\\data_'+str(X)+'_hashtag_gen_'+str(Y)+'.p', 'rb'))
+  prev_hashtags = ['#music','#concert','#politics','#trump','#russia','#brexit','#gaming','#gamers','#pc','#xbox']
 
-  new_top_10 = [] #take the top 10 most popular hashtags in this iteration step
+  """
+  new_top_10 = [] #take the top 10 most popular NEW hashtags in this iteration step
   i=0
   while len(new_top_10) < 11:
-    if hashtags[i] not in prev_hashtags:  #only add in new hashtags 
-      new_top_10.append(hashtags[i])
-    i += 1
+    if sorted_freqs[i] not in prev_hashtags:  #only add in new hashtags 
+      new_top_10.append(sorted_freqs[i])
+      i += 1
+  """
 
-  most_pop_ret = prev_hashtags + new_top_10 #old hashtags plus top 10 new hashtags
-  f2 = cwd + '\\data_'+str(X)+'_curr_hashtag_gen_'+str(Y+1)+'.txt'
-  with open(f2,'w') as f2:
-    for hashtag in most_pop_ret:
-      f2.write(str(hashtag) + '\n') #store as first line for use in gen Y+2. 
+  new_filter = list(set(prev_hashtags + most_pop)) #old hashtags plus top 10 new hashtags
+  fn = cwd + '\\data_'+str(X)+'_hashtag_gen_'+str(Y+1)+'.txt'
+  with open(fn,'w') as fn:
+    for hashtag in new_filter:
+      fn.write(str(hashtag) + '\n') #store as first line for use in gen Y+2. 
+  pickle.dump(new_filter, open(cwd + '\\data_'+str(X)+'_hashtag_gen_'+str(Y+1)+'.p', 'wb'))
+  #store new hashtags as both txt and pickle files so they can be reused in next gen
 
-  #store freqs for new hashtags
-  filename = cwd + '\\data_'+str(X)+'_hashtag_gen_'+str(Y+1)+'.txt'
-  with open(filename,'w') as f:
-    f.write('number of hashtags: ' + str(len(hashtags)) + '\n')
-    #f.write(str(most_pop[399:410])+'\n')
-    for hashtag in most_pop:
-      f.write(str(hashtag[0]) + ' : ' + str(hashtag[1]) + '\n')
-  
-  return most_pop_ret
+  return new_filter
 
 if __name__ == '__main__':
+    #keywords = get_hashtags()
+    #pdb.set_trace()
 
     #This handles Twitter authetification and the connection to Twitter Streaming API
     l = StdOutListener()
@@ -95,7 +80,11 @@ if __name__ == '__main__':
     auth.set_access_token(access_token, access_token_secret)
     stream = Stream(auth, l)
 
-    #keywords = get_hashtags()
     #This line filter Twitter Streams to capture data by the keywords
-    #stream.filter(track=keywords)
-    stream.filter(track=['a', 'the', 'how', 'so', 'can', 'in'])
+    
+    #gen 1 and after
+    keywords = get_hashtags()
+    stream.filter(track=keywords)
+
+    #initial
+    #stream.filter(track=['#music','#concert','#politics','#trump','#russia','#brexit','#gaming','#gamers','#pc','#xbox'])

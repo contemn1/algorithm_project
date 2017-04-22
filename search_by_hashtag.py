@@ -12,14 +12,14 @@ def get_tweets(graph_dict, input_hashtag_tweets, tweet_ids, input_hashtag, simil
   for (hashtag, score) in similar_hashtags:
     tweets = graph_dict[hashtag] #for hashtags of that tweet
     for t in tweets:
-      if t not in input_hashtag_tweets and t not in similar_tweets: #find relative complement and prevent duplicates
+      if t not in input_hashtag_tweets and t not in similar_tweets: #find relative complement (no tweets contain that hashtag) and prevent duplicates
         similar_tweets.append(t)
   similar_hashtags = list(set(similar_hashtags))
 
   cwd = os.getcwd()
   fn = cwd + '\\data_7_gen_2_hashtag_'+str(input_hashtag)+'_simtweets_'+cat+'.txt'
   output = open(fn,'w') 
-  if similar_hashtags == []:
+  if similar_tweets == []:
     output.write('No new tweets found')
   else:
     for t in similar_tweets:
@@ -42,10 +42,12 @@ def get_hashtags(graph_dict, input_hashtag, hashtag_ids, similar_hashtags, cat):
 def main():
   #load G, scores and id labels
   cwd = os.getcwd()
-  graph_dict = pickle.load( open(cwd + '\\data_7_gen_2_bigraph.p', "rb" ) )
-  tweet_ids = pickle.load( open(cwd + '\\data_7_gen_2_tweets.p', "rb" ) ) 
-  hashtag_ids = pickle.load( open(cwd + '\\data_7_gen_2_hashtags.p', "rb" ) ) 
-  scores = pickle.load( open(cwd + '\\data_7_gen_2_scores.p', "rb" ) ) 
+  data_file = 'data_1'
+  header = cwd + '\\' + data_file
+  graph_dict = pickle.load( open(header +'_bigraph.p', "rb" ) )
+  tweet_ids = pickle.load( open(header +'_tweets.p', "rb" ) ) 
+  hashtag_ids = pickle.load( open(header +'_hashtags.p', "rb" ) ) 
+  scores = pickle.load( open(header +'_scores.p', "rb" ) ) 
 
   #from user input, get input_hashtag
   rev_hashtag_ids = {v: k for k, v in hashtag_ids.iteritems()} #reverse hashtag_ids to get hashtag : id

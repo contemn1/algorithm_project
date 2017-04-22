@@ -42,10 +42,12 @@ def get_tweets(graph_dict, input_tweet, tweet_ids, similar_tweets, cat):
 def main():
   #load G, scores and id labels
   cwd = os.getcwd()
-  graph_dict = pickle.load( open(cwd + '\\data_7_gen_2_bigraph.p', "rb" ) )
-  tweet_ids = pickle.load( open(cwd + '\\data_7_gen_2_tweets.p', "rb" ) ) 
-  hashtag_ids = pickle.load( open(cwd + '\\data_7_gen_2_hashtags.p', "rb" ) ) 
-  scores = pickle.load( open(cwd + '\\data_7_gen_2_scores.p', "rb" ) ) 
+  data_file = 'data_1'
+  header = cwd + '\\' + data_file
+  graph_dict = pickle.load( open(header +'_bigraph.p', "rb" ) )
+  tweet_ids = pickle.load( open(header +'_tweets.p', "rb" ) ) 
+  hashtag_ids = pickle.load( open(header +'_hashtags.p', "rb" ) ) 
+  scores = pickle.load( open(header +'_scores.p', "rb" ) ) 
 
   #from user input, get input_tweet (during create_graph, you assigned an id to input_tweet, so use that)
   #rev_tweet_ids = ... #reverse tweet_ids

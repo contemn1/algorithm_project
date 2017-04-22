@@ -8,27 +8,30 @@ import pickle
 
 def main():
   cwd = os.getcwd()
-  limit = 2000 #limit on number of nodes in graph (both tweets and hashtags)
+  X = 8
+  Y = 1
+  data_file = 'data_' + str(X) + '_gen_'+ str(Y)
+  limit = 10000 #limit on number of nodes in graph (both tweets and hashtags)
 
   #get graph adj list, adj matrix, and the dicts that pair tweets w/ id and hashtags w/ id
-  data_file = cwd + '\\data_7_gen_2_plain.txt'
-  graph_dict, adj_matrix, tweet_ids, hashtag_ids, index_id = create_graph(data_file, limit) 
+  header = cwd + '\\' + data_file
+  graph_dict, adj_matrix, tweet_ids, hashtag_ids, index_id = create_graph(header +'.txt', limit) 
 
-  fn_1 = cwd + '\\data_7_gen_2_bigraph.txt'
+  fn_1 = header + '_bigraph.txt'
   sorted_graph = sorted(graph_dict.items())
   make_list_tuples(fn_1,sorted_graph)
   
-  fn_2 = cwd + '\\data_7_gen_2_tweets.txt'
+  fn_2 = header + '_tweets.txt'
   make_list(fn_2,tweet_ids)
 
-  fn_3 = cwd + '\\data_7_gen_2_hashtags.txt'
+  fn_3 = header + '_hashtags.txt'
   sorted_hashtag_ids = collections.OrderedDict(sorted(hashtag_ids.items()))
   make_list(fn_3, sorted_hashtag_ids)
 
   #store dict option so it can be loaded into hashtag_search.py later
-  pickle.dump(graph_dict, open(cwd + '\\data_7_gen_2_bigraph.p', "wb" ))
-  pickle.dump(tweet_ids, open(cwd + '\\data_7_gen_2_tweets.p', "wb" ))
-  pickle.dump(hashtag_ids, open(cwd + '\\data_7_gen_2_hashtags.p', "wb" ))
+  pickle.dump(graph_dict, open(header + '_bigraph.p', "wb" ))
+  pickle.dump(tweet_ids, open(header + '_tweets.p', "wb" ))
+  pickle.dump(hashtag_ids, open(header + '_hashtags.p', "wb" ))
 
   #calculate summed even powers of adj matrix to find which node pairs are within path of len K away
   test = adj_matrix
@@ -51,9 +54,9 @@ def main():
   id_nonzeros = index_to_id(nonzeros, index_id)
   
   scores, sorted_scores = simrank(graph_dict, id_nonzeros) #run simrank to get node pair scores
-  fn_4 = cwd + '\\data_7_gen_2_scores.txt'
+  fn_4 = header + '_scores.txt'
   make_list_tuples(fn_4, sorted_scores)
-  pickle.dump(scores, open(cwd + '\\data_7_gen_2_scores.p', "wb" ))
+  pickle.dump(scores, open(header + '_scores.p', "wb" ))
   time_pt_2 = time.time() - start_time
   print("Calculate Simrank and store scores: %s seconds" % (time_pt_2 - time_pt_1))
 
