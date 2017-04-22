@@ -7,7 +7,6 @@ import os
 import pickle
 
 def main():
-  start_time = time.time()
   cwd = os.getcwd()
   limit = 2000 #limit on number of nodes in graph (both tweets and hashtags)
 
@@ -33,6 +32,7 @@ def main():
 
   #calculate summed even powers of adj matrix to find which node pairs are within path of len K away
   test = adj_matrix
+  start_time = time.time()
   for i in range(2): 
     test = numpy.dot(test,test) #range(k) means up to G^(2^(i+1))
     if i != 0:
@@ -49,14 +49,13 @@ def main():
   #first convert each node into an index #. then convert back. may req 2 hashtables
   nonzeros = numpy.transpose(numpy.nonzero(sums))
   id_nonzeros = index_to_id(nonzeros, index_id)
-  time_pt_2 = time.time() - start_time
-  print("Calculate Simrank: %s seconds" % (time_pt_2 - time_pt_1))
   
   scores, sorted_scores = simrank(graph_dict, id_nonzeros) #run simrank to get node pair scores
   fn_4 = cwd + '\\data_7_gen_2_scores.txt'
   make_list_tuples(fn_4, sorted_scores)
   pickle.dump(scores, open(cwd + '\\data_7_gen_2_scores.p', "wb" ))
-
+  time_pt_2 = time.time() - start_time
+  print("Calculate Simrank and store scores: %s seconds" % (time_pt_2 - time_pt_1))
 
 if __name__ == '__main__':
     try:

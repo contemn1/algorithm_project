@@ -1,11 +1,12 @@
 #Listener code: http://adilmoujahid.com/posts/2014/07/twitter-analytics/
 #Import the necessary methods from tweepy library
-from tweepy.streaming import StreamListener
+import pdb
 from tweepy import OAuthHandler
 from tweepy import Stream
+from tweepy.streaming import StreamListener
 import operator
 from itertools import islice
-import pdb
+import os
 
 #Variables that contains the user credentials to access Twitter API 
 consumer_key = 'S8XtmVeNeYp0F5s3Ba8294rOD'
@@ -93,7 +94,7 @@ if __name__ == '__main__':
     auth.set_access_token(access_token, access_token_secret)
     stream = Stream(auth, l)
 
-    keywords = get_hashtags()
+    #keywords = get_hashtags()
     #This line filter Twitter Streams to capture data by the keywords
-    #stream.filter(track=['drake','nickiminaj'])
-    stream.filter(track=keywords)
+    #stream.filter(track=keywords)
+    stream.filter(track=['a', 'the', 'how', 'so', 'can', 'in'])

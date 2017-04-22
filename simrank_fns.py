@@ -29,14 +29,14 @@ def create_graph(data_file, lim):
         adj_matrix.append([0]*lim) #new entry in adj matrix. DON'T DELETE IT EVEN IF EMPTY. keeps track of nodes
         n += 1
         index_id[i] = n #this row in adj matrix is tweet
-        graph_dict[i] = [] 
+        graph_dict[i] = set([])
         splitted_tweet = tweet.split()
         for word in splitted_tweet:
           if '#' in word and len(word) > 1: #if hashtag that's not just '#'
             if word not in hashtag_labels_flip:  #if it's a new hashtag
               hashtag_labels[j] = word #assign id j as hashtag
               hashtag_labels_flip[word] = j #assign hashtag as id j
-              graph_dict[j] = [i] #new hashtag
+              graph_dict[j] = set([i]) #new hashtag
               n += 1 #tweets and hashtags are mixed in index ids
               adj_matrix.append([0]*lim) 
               adj_matrix[index_id[i]][n] = 1 #symmetric so only keep track of one side. upper triangular adj matrix
@@ -45,11 +45,11 @@ def create_graph(data_file, lim):
               j -= 1
             #the neighbors of hashtag j (even tho directed graph, this is for algos to know hashtag's neighbors)
             else: #it's an old hashtag
-              graph_dict[hashtag_labels_flip[word]].append(i)
+              graph_dict[hashtag_labels_flip[word]].add(i)
               adj_matrix[index_id[i]][index_id[hashtag_labels_flip[word]]] = 1 #[tweet][hashtag]
               adj_matrix[index_id[hashtag_labels_flip[word]]][index_id[i]] = 1
-            if word not in graph_dict[i]: #avoid duplicate hashtags. Put this after labeling hashtags to id's
-              graph_dict[i].append(hashtag_labels_flip[word]) #add hashtag to neighbors of tweet i
+            #avoid duplicate hashtags. Put this after labeling hashtags to id's
+            graph_dict[i].add(hashtag_labels_flip[word]) #add hashtag to neighbors of tweet i
         if graph_dict[i] == []: #just in case tweet only contains words '#' of len 1
           del graph_dict[i]
         else:
