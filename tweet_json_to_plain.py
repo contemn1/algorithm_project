@@ -6,11 +6,11 @@ import matplotlib.pyplot as plt
 import numpy as np
 import os
 
-def main():
+def to_plain(X,Y):
   cwd = os.getcwd()
-  X = 8 #dataset ID
-  Y = 1 #current gen
-  tweets_data_path = cwd + '\\data_'+str(X)+'_gen_'+str(Y)+'_json.txt'
+  #X = 9 #dataset ID
+  #Y = 0 #current gen
+  tweets_data_path = cwd + '\\data_'+str(X)+'_gen_'+str(Y)+'.json'
 
   k=1
   tweets_data = [] #Can't store too many tweets b/c of memory error
