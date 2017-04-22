@@ -27,10 +27,11 @@ class StdOutListener(StreamListener):
 
 #use hashtags from the last iteration to search for related hashtags in the Listener
 def get_hashtags():
+  cwd = os.getcwd()
   X=7 #dataset ID
   Y=2 #iteration step
   hashtag_freqs = {}
-  f = open('C:\Users\Michael\Documents\_rsch\classes sp17/algo\project code/trial 2/data_'+str(X)+'_gen_'+str(Y)+'_plain.txt', 'r')
+  f = open(cwd + '\\data_'+str(X)+'_gen_'+str(Y)+'_plain.txt', 'r')
   for tweet in f:
     if '#' in tweet:  #only consider tweets with hashtags
       splitted_tweet = tweet.split()
@@ -52,7 +53,7 @@ def get_hashtags():
 
   prev_hashtags = []
   if Y > 0: #check if file exists
-    with open('C:\Users\Michael\Documents\_rsch\classes sp17/algo\project code/trial 2/data_'+str(X)+'_curr_hashtag_gen_'+str(Y)+'.txt', 'r') as f:
+    with open(cwd + '\\data_'+str(X)+'_curr_hashtag_gen_'+str(Y)+'.txt', 'r') as f:
       #prev_hashtags = list(islice(f, Y*10)) #The +'\n' is built in from reading the file
       end = Y*10  #the number of lines to check in the file. The number of hashtags in prev gen Y is Y*10
       j=0
@@ -71,13 +72,13 @@ def get_hashtags():
     i += 1
 
   most_pop_ret = prev_hashtags + new_top_10 #old hashtags plus top 10 new hashtags
-  f2 = 'C:\Users\Michael\Documents\_rsch\classes sp17/algo\project code/trial 2/data_'+str(X)+'_curr_hashtag_gen_'+str(Y+1)+'.txt'
+  f2 = cwd + '\\data_'+str(X)+'_curr_hashtag_gen_'+str(Y+1)+'.txt'
   with open(f2,'w') as f2:
     for hashtag in most_pop_ret:
       f2.write(str(hashtag) + '\n') #store as first line for use in gen Y+2. 
 
   #store freqs for new hashtags
-  filename = 'C:\Users\Michael\Documents\_rsch\classes sp17/algo\project code/trial 2/data_'+str(X)+'_hashtag_gen_'+str(Y+1)+'.txt'
+  filename = cwd + '\\data_'+str(X)+'_hashtag_gen_'+str(Y+1)+'.txt'
   with open(filename,'w') as f:
     f.write('number of hashtags: ' + str(len(hashtags)) + '\n')
     #f.write(str(most_pop[399:410])+'\n')

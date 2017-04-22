@@ -29,7 +29,7 @@ import io
 #f = open(cwd + '\\data_'+str(X)+'_gen_'+str(Y+1)+'_plain.txt', 'w')
 f = open(cwd + '\\twitter_data_1_plain.txt', 'w')
 for line in tweets['text']:
-    lamp = line.encode('UTF-8') #convert to unicode
-    lamp_2 = lamp.decode('unicode_escape').encode('ascii','ignore')	#get rid of unicode artifacts in hashtags
-    f.write(lamp_2.replace('\n',' ') + '\n' + '\n') #'\n' within a tweet may break a single tweet into multiple lines
+    pre_tweet = line.encode('UTF-8') #convert to unicode
+    tweet = pre_tweet.decode('unicode_escape').encode('ascii','ignore')	#get rid of unicode artifacts in hashtags
+    f.write(tweet.replace('\n',' ') + '\n' + '\n') #'\n' within a tweet may break a single tweet into multiple lines
     #so first remove \n bc we want to keep each tweet on one line
