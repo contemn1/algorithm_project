@@ -80,7 +80,7 @@ def simrank(G, id_nonzeros):
     else:
       node_scores[(x,y)] = 0
 
-  for k in range(5): #5 iterations
+  for k in range(5): #5 iterations. For nodes separated by 4 degrees, this is approximately close to the steady state of scores
     for node in id_nonzeros:
       x = node[0] #don't call it a and b b/c messes it up in pdb
       y = node[1]
@@ -98,6 +98,21 @@ def simrank(G, id_nonzeros):
   sorted_scores.reverse()
   return node_scores, sorted_scores
 
+def adjlist_to_adjmat(graph_dict): #alternative method for getting adj_matrix and index_ids, after getting adj list
+  index_ids = {} #since pos in mat is not the same as node ID. node_id : index_id to retrieve neighbors
+  n = len(graph_dict)
+  adj_mat = numpy.zeros((n,n))
+  q = 0
+  for node in graph_dict: #two separate loops; first to assign id, then get adj mat
+    index_ids[node] = q
+    q += 1
+  for node in graph_dict:
+    neighbors = graph_dict[node]
+    for neigh in neighbors:
+      adj_mat[index_ids[node], index_ids[neigh]] = 1
+  #return numpy.triu(adj_mat) #since it's symmetric (undirected), return upper triangular (this might not work when getting shortest paths)
+  return adj_mat
+
 #take in dictionary and return key : value list
 def make_list(filename,input_dict):
   output = open(filename,'w')
@@ -113,16 +128,6 @@ def make_list_tuples(filename, pair_list):
     row = str(pair[0]) + ' : ' + str(pair[1])
     output.write(row + '\n')
   output.close()
-
-def make_graph_csv(filename, graph_dict,hashtag_labels):
-  csv = open(filename,"w")
-  for v in graph_dict: 
-      row=str(v)
-      edges = graph_dict[v]
-      for t in edges:
-          row += ';' + str(t)
-      csv.write(row + '\n')
-  csv.close()
 
 if __name__ == '__main__':
     try:

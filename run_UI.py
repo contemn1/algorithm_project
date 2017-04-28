@@ -31,7 +31,7 @@ def main():
 
   label1 = Label( root, text="Search by a Tweet ID or a hashtag")
   label2 = Label( root, text="Input tweet")
-  desc = Label( root, text="'Gather new tweets': Gathers ~50 new tweets using inputted hashtags to compute a new graph. Demo Run time: ~30 secs")
+  desc = Label( root, text="'Gather new tweets': Gathers ~50 new tweets using inputted hashtags and store new similarity results. Demo Run time: ~30 secs")
   desc_2 = Label( root, text="Format of 'Gather new tweets' input: Put # before each hashtag. Separate hashtags by space.")
   user_input = Entry(root, bd = 5)
   text = Text(root, height = 20, width = 200)
@@ -52,7 +52,7 @@ def main():
     elif low_tweets == 'no new':
       text.insert(INSERT, 'No new tweets found'+'\n')
     elif low_tweets == 'not valid':
-      text.insert(INSERT, 'Enter a valid tweet id'+'\n')
+      text.insert(INSERT, 'Enter a valid tweet id or hashtag'+'\n')
     else:
       for tweet in low_tweets:
         text.insert(INSERT, tweet + '\n')
@@ -68,7 +68,7 @@ def main():
     elif low_hashtags == 'no new':
       text.insert(INSERT, 'No new hashtags found'+'\n')
     elif low_hashtags == 'not valid':
-      text.insert(INSERT, 'Enter a valid tweet id'+'\n')
+      text.insert(INSERT, 'Enter a valid tweet id or hashtag'+'\n')
     else:
       for hashtag in low_hashtags:
         text.insert(INSERT, hashtag + '\n')
@@ -125,7 +125,7 @@ def main():
         text.insert(INSERT, 'You cannot search by just a single hashtag symbol')
       elif ' ' in user_input.get():
         text.delete(1.0, END)
-        text.insert(INSERT, 'Enter a single hashtag with no spaces. For multiple hashtags, refer to Gather new tweets')  
+        text.insert(INSERT, 'Enter a single hashtag with no spaces. For multiple hashtags, refer to: Gather new tweets')  
       else:
         return display_sim_hashtags_hin() #search by hashtag
 
@@ -180,7 +180,7 @@ def main():
     user_dat = user_input_2.get()
     data_file = 'data_' + str(user_dat) + '_gen_'+ str(Gen)
     header = cwd + '\\' + data_file
-    if os.path.exists(header+'.txt') == True:
+    if os.path.exists(header+'_scores.p') == True:
       Dat = int(user_dat)
       graph_dict = pickle.load( open(header +'_bigraph.p', "rb" ) )
       tweet_ids = pickle.load( open(header +'_tweets.p', "rb" ) ) 

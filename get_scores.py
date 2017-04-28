@@ -6,11 +6,12 @@ from simrank_fns import *
 import os
 import pickle
 
+#The text dumping code is commented out in output_scores to make the function run faster for the 'Gather new tweets' job in the UI
 def output_scores(X,Y):
   cwd = os.getcwd()
   
   data_file = 'data_' + str(X) + '_gen_'+ str(Y)
-  limit = 10000 #limit on number of nodes in graph (both tweets and hashtags)
+  limit = 5000 #limit on number of nodes in graph (both tweets and hashtags). Total nodes usually ~3500 for Listener running for 5 min
 
   #get graph adj list, adj matrix, and the dicts that pair tweets w/ id and hashtags w/ id
   header = cwd + '\\' + data_file
@@ -33,14 +34,13 @@ def output_scores(X,Y):
   pickle.dump(hashtag_ids, open(header + '_hashtags.p', "wb" ))
 
   #calculate summed even powers of adj matrix to find which node pairs are within path of len K away
-  test = adj_matrix
+  am_sq = numpy.dot(adj_matrix, adj_matrix)
+  test = am_sq
+  sums = test
   #start_time = time.time()
-  for i in range(2): 
-    test = numpy.dot(test,test) #range(k) means up to G^(2^(i+1))
-    if i != 0:
-      sums = sums + test
-    else:
-      sums = test
+  for i in range(1): 
+    test = numpy.dot(test,am_sq) #range(k) means up to G^(2^(k+1))
+    sums = sums + test
   #time_pt_1 = time.time() - start_time
   #print("Sum even powers of adj matrix: %s seconds" % (time_pt_1))
   for i in range(len(sums)):
