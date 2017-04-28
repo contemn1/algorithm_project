@@ -11,7 +11,52 @@
 \begin{document}
 Stage 4 - User Interface \\\\
 \begin{itemize} 
-\item{\bf Network Similarity Search UI} 
+
+\item{\bf Section 1: Edit Distance Similarity Search UI} 
+\textnormal{
+The UI for finding semantic similar tweets based on Edit Distance integrated Word2Vec (EDW) and K-medoids clustering (implemented by Lingfei Zeng).\\\\
+The mode of user interaction with the data is text queries and mouse clicks. There are two input boxes. The first one is for text input such as a tweet, some key word or a topic (such as hashtags in tweets). The second one is for an integer to indicate how many (top) similar tweets one would like to display. Then mouse click for submit, the UI will return the output, which are the similar tweets. \\\\
+The initial UI screenshot in shown Figure \ref{fig1}. After input a tweet and the number of tweets one like to show, the result is shown in Figure \ref{fig2} and Figure \ref{fig3} . One can also input one word as topic or hashtags in the tweets. The search result is shown in  Figure \ref{fig4}. Overall, the output is quite accurate, which indicates the good performance and versatility of our algorithm. \\\\
+The error massage will pop out if user does not input anything but hit submit button. It's shown in Figure \ref{fig5}.   
+}
+
+ 
+\begin{figure}[H]
+	\caption{Initial UI screen shot}
+	\centering
+	\includegraphics[scale=0.3]{Screen_Shot_1.png}
+	\label{fig1}
+\end{figure}
+
+\begin{figure}[h]
+	\caption{Output after input of a tweet}
+	\centering
+	\includegraphics[scale=0.3]{Screen_Shot_2.png}
+	\label{fig2}
+\end{figure}
+
+\begin{figure}[H]
+	\caption{Output after another tweet}
+	\centering
+	\includegraphics[scale=0.3]{Screen_Shot_3.png}
+	\label{fig3}
+\end{figure}
+
+\begin{figure}[H]
+	\caption{Output after input a hashtag}
+	\centering
+	\includegraphics[scale=0.3]{Screen_Shot_4.png}
+	\label{fig4}
+\end{figure}
+
+\begin{figure}[H]
+	\caption{Error message when user doesn't input query but hit the submit button }
+	\centering
+	\includegraphics[scale=0.3]{Screen_Shot_5.png}
+	\label{fig5}
+\end{figure}
+
+\item{\bf Section 3: Network Similarity Search UI} 
 \\\\
 The Network Similarity Search UI was written in the Python Tkinter library. When the UI starts, it loads the following from the initial dataset: its graph, tweet and hashtag IDs, and scores. 
 \\\\
