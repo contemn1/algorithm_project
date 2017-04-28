@@ -1,0 +1,117 @@
+\documentclass[10pt]{article}
+\usepackage[usenames]{color} %used for font color
+\usepackage{amssymb} %maths
+\usepackage{amsmath} %maths
+\usepackage[ruled,linesnumbered]{algorithm2e}
+\usepackage[utf8]{inputenc} %useful to type directly diacritic characters
+
+\usepackage{graphics}
+\usepackage{adjustbox}
+\usepackage{float}
+\begin{document}
+\begin{itemize} 
+\item{The general system description (for the general public): } 
+\\\\
+Twitter posts, called tweets, are often accompanied by user-inputted hashtags which specify topics related to the tweet content. By searching for hashtags or keywords, users are able to find tweets containing those hashtags or keywords. However, users may be unaware of existing hashtags, and may submit tweets which are similar to some hashtag topic but do not contain the hashtag. Typically, it is up to other users to re-tweet these tweets, adding in the hashtags themselves. But this requires other users to not only notice these tweets, but to also know about these hashtags. 
+\\\\
+Additionally, the top results from Twitter's current search tool may not contain tweets with certain hashtags, such as those of intermediate popularity, and thus the user may be cut off from relatively obscure communities that she may be interested in. Thus, a secondary outcome of the system is to connect users to these communities. A similar issue arises if users post about similar tweet topics, but there is no unifying hashtag that makes them aware of one another; this system can form bridges between these users. 
+\\\\
+The goal of this project is to produce a system capable of finding similar tweets and hashtags based on semantic and network similarity. Our aim is to build a system that retrieves tweets which do not contain the user's search terms but are related to them, and to retrieve hashtags which are similar to those search terms but are not identical. For semantic similarity, the first approach uses weighted word vectors to  represent the document vector of every tweet, and then clusters tweets into topics by Hierarchical Clustering (each topic being the popular hashtags within that cluster). The second approach uses Edit Distance to find similar phrases.For network similarity, SimRank is utilized. If there is time, a web based front-end (and API) will be developed. This front-end server will allow continual update of the network using new tweets. 
+\\
+\item{The three types of users and their interaction modes (grouped by their data access/update rights): }
+\begin{itemize} 
+\item{Twitter user: able to use the UI but not read the code} 
+
+\item{Twitter Admin: can contact development team to assess tweet content and manage user access}
+
+\item{Developers: can read but not change the code. I.E. App developer who uses Twitter for his services}
+
+\end{itemize}
+\item{The real world scenarios: }
+	\begin{itemize} 
+	\item[$\diamond$]{Scenario 1 description for Twitter user: }
+	Users, who want to find tweets similar to a hashtag but which do not contain the hashtag, may use the visualized network to search for these tweets (and possibly tag them).
+	\item{System Data Input for Scenario1: }
+	Hashtags and keywords as search terms
+	\item{Input Data Types for Scenario1: }
+	Strings
+	\item{System Data Output for Scenario1: }
+	Recommended tweets and/or hashtags, a visualized network (for clustering)
+	\item{Output Data Types for Scenario1: }
+	Array, graph
+	\end{itemize}
+
+	\begin{itemize} 
+	\item[$\diamond$]{Scenario 2 description for Twitter user: }
+	Users who want to find what hashtags their tweets contain, but who are unaware of what hashtags they should use.
+	\item{System Data Input for Scenario1: }
+	A tweet
+	\item{Input Data Types for Scenario1: }
+	Strings
+	\item{System Data Output for Scenario1: }
+	A clustered tweet network of hashtag topics; the tweet will fall into one of these topics (the one it is most similar to)
+	\item{Output Data Types for Scenario1: }
+	Graph
+	\end{itemize}
+
+	\begin{itemize} 
+	\item[$\diamond$]{Scenario 1 description for Twitter Admins: }
+	An inappropriate tweet is displayed
+	\item{System Data Input for Scenario1: }
+	Complaint to development team
+	\item{System Data Output for Scenario1: }
+	Development responds by removing tweet
+	\end{itemize}
+
+	\begin{itemize} 
+	\item[$\diamond$]{Scenario 2 description for Twitter Admins: }
+	Admin wants access to data to discover which users to ban
+	\item{System Data Input for Scenario1: }
+	A request development team
+	\item{System Data Output for Scenario1: }
+	Development team grants admin privileges to modify system
+	\end{itemize}
+
+	\begin{itemize} 
+	\item[$\diamond$]{Scenario 1 description for Developers: }
+	Wants to look at system's code because it's similar to their project
+	\item{System Data Input for Scenario1: }
+	Description of project
+	\item{Input Data Types for Scenario1: }
+	JSON file
+	\item{System Data Output for Scenario1: }
+	Portion of system code
+	\end{itemize}
+
+	\begin{itemize} 
+	\item[$\diamond$]{Scenario 2 description for Developers: }
+	Discovers bug in our system
+	\item{System Data Input for Scenario1: }
+	Description of bug
+	\item{Input Data Types for Scenario1: }
+	JSON file
+	\item{System Data Output for Scenario1: }
+	Development team consults with developer to debug
+	\end{itemize}
+\item{Project Timeline and Divison of Labor.}
+\\\\ Each member will contribute to writing the report and making the powerpoint.
+\\\\ Stage II, Data Gathering:
+\begin{itemize} 
+\item{Xunjie: will run the tweet gathering algorithm periodically on Linux}
+\item{Michael: will implement the tweet gathering algorithms to obtain tweets in real time}
+\item{Lingfei: will gather preliminary, cleaner data from followthehashtag.com}
+\end{itemize}
+Stage III, Implementation:
+\begin{itemize} 
+\item{Xunjie: will implement the LDA and Hierarchical Clustering algorithm}
+\item{Michael: will implement the bipartite code and the SimRank algorithm}
+\item{Lingfei: will implement the Edit Distance algorithm}
+\end{itemize}
+Stage IV, UI and Demo:
+\begin{itemize} 
+\item{Xunjie: will create the UI for clustering}
+\item{Michael: will create the UI for SimRank}
+\item{Lingfei: will create the UI for Edit Distance}
+\end{itemize}
+\end{itemize}
+\end{document}
