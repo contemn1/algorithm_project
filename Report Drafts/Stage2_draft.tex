@@ -98,17 +98,15 @@ Now let d = the average of $|I(a)|*|I(b)|$ over all nodes in $ G^2$ . Let K = av
 \end{itemize}
 
 \begin{figure}[H]
-  \includegraphics[width=\linewidth]{C:/Users/Michael/Downloads/user_flowchart.png}
-\end{figure}
-
-\begin{figure}[H]
-  \includegraphics[width=\linewidth]{C:/Users/Michael/Downloads/cluster_flowchart.png}
+  \includegraphics[width =\linewidth]{UI flowchart.png}
 \end{figure}
 
 \pagebreak
 
 \item{\bf High Level Pseudo Code}
 
+  \scalebox{0.75}{
+    \begin{minipage}{0.7\linewidth}
 \begin{algorithm}[H]
 	\SetKwData{Left}{left}
 	\SetKwData{This}{this}
@@ -137,7 +135,11 @@ Now let d = the average of $|I(a)|*|I(b)|$ over all nodes in $ G^2$ . Let K = av
 	
 	\caption{Edit Distance}\label{algo_disjdecomp}
 \end{algorithm}
+\end{minipage}%
+    }
 
+  \scalebox{0.75}{
+    \begin{minipage}{0.7\linewidth}
 \begin{algorithm}[H]
 	\SetKwData{Left}{left}
 	\SetKwData{This}{this}
@@ -173,7 +175,11 @@ Now let d = the average of $|I(a)|*|I(b)|$ over all nodes in $ G^2$ . Let K = av
 		
 \caption{Hierarchical Clustering Algorithm}\label{algo_disjdecomp}
 \end{algorithm}
+\end{minipage}%
+    }
 
+  \scalebox{0.75}{
+    \begin{minipage}{0.7\linewidth}
 \begin{algorithm}[H]
 	\SetKwData{Left}{left}
 	\SetKwData{This}{this}
@@ -207,7 +213,8 @@ Now let d = the average of $|I(a)|*|I(b)|$ over all nodes in $ G^2$ . Let K = av
 	Return node\_scores
 	\caption{Node pair similarity scores pseudocode}\label{algo_a}
 \end{algorithm}
-
+\end{minipage}%
+    }
 
 \item{\bf Algorithms and  Data Structures:}
 In Algorithm 1, the major algorithm is Edit Distance in Dynamic Programming. The data structure is two-dimensional array, and the time complexity is $ \mathcal{O}(mn)$. In Algorithm 2, we use Agglomerative Hierarchical Clustering Algorithm to cluster the documents. The time complexity of this algorithm is $ \mathcal{O}(n^2logn)$. In Algorithm 3, the nodes with their IDs are stored in hash tables. The graphs, represented as adjacency lists, are also stored in hash tables. The node pairs and their scores are stored in hash tables. Similar tweets and hashtags are stored in arrays. \\
