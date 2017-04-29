@@ -26,7 +26,7 @@ The user is given 3 different similarity measures for searching. We will begin w
 
 \item[$\diamond$]{\bf1) Tweet clustering based on semantic similarity}
 
-We aim to cluster tweets into different groups using Hierarchical Clustering. To do this, we require semantic similarity scores. We compute these using the extended {\bf Edit Distance} algorithm integrated {\bf Word2Vec} embedding to compute the distance between sentences in the tweets, and by grouping by shortest distance we divide tweets into different groups. \\\\
+We aim to cluster tweets into different groups using Hierarchical Clustering. To do this, we require semantic similarity scores. LDA is one method. Here, we will discuss how to compute these using the the second method: using the extended {\bf Edit Distance} algorithm integrated {\bf Word2Vec} embedding to compute the distance between sentences in the tweets, and by grouping by shortest distance we divide tweets into different groups. \\\\
 In details, we describe tweet sentence $S_1$ as $S_1$=\{$a_1$,$a_2$,…,$a_n$\} and sentence $S_2$ as $S_2$ =\{$b_1$,$b_2$, …,$b_m$\}. $S_1$ consists of n words and $S_2$ consists of m words. $a_i$ is the i th word of $S_1$ and $b_j$ is the j th word of $S_2$. We use Sim($S_1$,$S_2$) to describe the similarity between $S_1$ and $S_2$, with the range of 0 (no relation) to 1 (semantic equivalence). For edit distance, we utilize Levenshtein Distance algorithm to extend to the word sets in sentences. We define the Levenshtein distance between $S_1$ and $S_2$ is L(n,m), where  \(0\leq i\leq n\) and \(0\leq j\leq n\). And we have: \[L(i, j) = max(i, j)  \qquad   if \quad min(i,j)=0, \]  
 
 $$
